@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Math Tutor - Gaia Theme</title>
+    
+    <!-- Gaia Theme Fonts -->
+    <link rel="stylesheet" href="https://fonts.bunny.net/css?family=Lato:400,900|Roboto+Mono:400,700&display=swap">
+    
+    <!-- KaTeX for LaTeX rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    
+    <!-- Prism.js for code highlighting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <!-- Marked.js for Markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@5.1.1/marked.min.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🤖 AI Math Tutor</h1>
+            <p>Your personal tutor for college-level Statistics and Mathematics</p>
+        </header>
+
+        <!-- Main Chat Area -->
+        <main class="chat-container">
+            <!-- Chat Messages -->
+            <div class="chat-messages" id="chatMessages">
+                <div class="welcome-message">
+                    <h3>Welcome to your AI Math Tutor! 🎓</h3>
+                    <p>I'm here to help you with:</p>
+                    <ul>
+                        <li>📊 Statistics and Probability</li>
+                        <li>🧮 Calculus and Integration</li>
+                        <li>📈 Mathematical Analysis</li>
+                        <li>🔢 Equation Solving</li>
+                    </ul>
+                    <p>Ask me anything - I'll guide you step-by-step through the solutions!</p>
+                </div>
+            </div>
+
+            <!-- Loading Indicator -->
+            <div class="loading-indicator" id="loadingIndicator" style="display: none;">
+                <div class="typing-indicator">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <p>AI Tutor is thinking...</p>
+            </div>
+
+            <!-- Input Area -->
+            <div class="chat-input-container">
+                <form id="chatForm" class="chat-form">
+                    <div class="input-group">
+                        <textarea 
+                            id="messageInput" 
+                            placeholder="Ask your math question here..." 
+                            rows="1"
+                            maxlength="1000"
+                        ></textarea>
+                        <button type="submit" id="sendButton" disabled>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="22" y1="2" x2="11" y2="13"></line>
+                                <polygon points="22,2 15,22 11,13 2,9"></polygon>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </main>
+
+        <!-- Sidebar for Session Info -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3>Session Info</h3>
+                <button class="close-sidebar" id="closeSidebar">×</button>
+            </div>
+            
+            <div class="session-info">
+                <div class="info-item">
+                    <label>Session ID:</label>
+                    <span id="sessionId">-</span>
+                </div>
+                <div class="info-item">
+                    <label>Messages:</label>
+                    <span id="messageCount">0</span>
+                </div>
+                <div class="info-item">
+                    <label>Started:</label>
+                    <span id="sessionStart">-</span>
+                </div>
+            </div>
+
+            <div class="learning-insights">
+                <h4>Learning Insights</h4>
+                <ul id="insightsList">
+                    <li class="no-insights">No insights yet. Start chatting to see what you learn!</li>
+                </ul>
+            </div>
+
+            <div class="session-actions">
+                <button class="btn btn-secondary" id="exportSession">📥 Export Session</button>
+                <button class="btn btn-danger" id="deleteSession">🗑️ Delete Session</button>
+            </div>
+        </aside>
+
+        <!-- Floating Action Button -->
+        <button class="fab" id="openSidebar" title="Session Info">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Custom JavaScript -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html> 

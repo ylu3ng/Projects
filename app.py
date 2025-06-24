@@ -140,4 +140,9 @@ if __name__ == '__main__':
         print("Warning: GOOGLE_API_KEY environment variable not set!")
         print("Please set your Google AI Studio API key before running the app.")
     
-    app.run(debug=True, host='0.0.0.0', port=5000) 
+    print("🚀 Starting AI Math Tutor Web Application...")
+    print("📱 Open your browser to: http://localhost:8080")
+    print("🎨 Featuring the beautiful Gaia theme!")
+    print("-" * 50)
+    
+    app.run(debug=True, host='0.0.0.0', port=8080) 
