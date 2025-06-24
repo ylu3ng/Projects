@@ -3,19 +3,13 @@ from sympy import symbols, integrate, sympify, Symbol, solve
 import wolframalpha
 import json
 
-# --- Explicit API Key Configuration ---
-# Set the API key explicitly to override ADC
-GOOGLE_API_KEY = "AIzaSyDJSf15xfex6Ez9cOkUP6ccH2dnsH_ROe4"
-os.environ['GOOGLE_API_KEY'] = GOOGLE_API_KEY
-
 # --- Configuration for APIs ---
 # Set your Wolfram Alpha App ID. Get one from developer.wolframalpha.com
 # It's best practice to load this from environment variables.
 WOLFRAM_ALPHA_APP_ID = os.environ.get("WOLFRAM_ALPHA_APP_ID", "4PL699-V7PYHX5W4K")
-
 # Initialize Wolfram Alpha Client
 wolfram_client = None
-if WOLFRAM_ALPHA_APP_ID and WOLFRAM_ALPHA_APP_ID != "4PL699-V7PYHX5W4K":
+if WOLFRAM_ALPHA_APP_ID and WOLFRAM_ALPHA_APP_ID != "YOUR_ACTUAL_WOLFRAM_ALPHA_APP_ID_HERE":
     try:
         wolfram_client = wolframalpha.Client(WOLFRAM_ALPHA_APP_ID)
         print("Wolfram Alpha client initialized successfully.")
@@ -208,8 +202,6 @@ You are an expert, empathetic, and highly accurate AI Math Tutor specializing in
 
 # --- Initialize the LLM ---
 llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0) # Or ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0)
-print(f"[DEBUG] Using Gemini model: {llm.model}")
-
 
 # --- Create the LangChain Prompt Template ---
 prompt = ChatPromptTemplate.from_messages(
