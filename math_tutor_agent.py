@@ -222,29 +222,30 @@ agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
 print("\n--- Starting Conversation with AI Math Tutor ---")
 print("Type 'quit' or 'exit' to end the session.")
 print("-" * 50)
+if __name__ == "__main__":
 
-# --- Conversation Loop ---
-chat_history = []
-while True:
-    try:
-        user_input = input("\nStudent: ")
-        if user_input.lower() in ["quit", "exit"]:
-            print("AI Tutor: Goodbye! Happy studying!")
-            break
+    # --- Conversation Loop ---
+    chat_history = []
+    while True:
+        try:
+            user_input = input("\nStudent: ")
+            if user_input.lower() in ["quit", "exit"]:
+                print("AI Tutor: Goodbye! Happy studying!")
+                break
 
-        response = agent_executor.invoke({
-            "input": user_input,
-            "chat_history": chat_history
-        })
+            response = agent_executor.invoke({
+                "input": user_input,
+                "chat_history": chat_history
+            })
 
-        ai_message_content = response["output"]
-        print(f"\nAI Tutor: {ai_message_content}")
+            ai_message_content = response["output"]
+            print(f"\nAI Tutor: {ai_message_content}")
 
-        chat_history.append(HumanMessage(content=user_input))
-        chat_history.append(AIMessage(content=ai_message_content))
+            chat_history.append(HumanMessage(content=user_input))
+            chat_history.append(AIMessage(content=ai_message_content))
 
-    except Exception as e:
-        print(f"\nAn error occurred: {e}")
-        print("Please try again or restart the session.")
-        chat_history.append(HumanMessage(content=user_input))
-        chat_history.append(AIMessage(content=f"An internal error occurred: {e}. Please try again."))
+        except Exception as e:
+            print(f"\nAn error occurred: {e}")
+            print("Please try again or restart the session.")
+            chat_history.append(HumanMessage(content=user_input))
+            chat_history.append(AIMessage(content=f"An internal error occurred: {e}. Please try again."))
