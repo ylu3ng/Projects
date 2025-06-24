@@ -34,7 +34,7 @@ body {
     font-size: 2.5rem;
     font-weight: 900;
     margin-bottom: 10px;
-    color: #0288d1;
+    color: #348799;
 }
 
 .header p {
@@ -65,7 +65,7 @@ body {
 }
 
 .welcome-message {
-    background: linear-gradient(135deg, #0288d1 0%, #81d4fa 100%);
+    background: #348799;
     color: #fff8e1;
     padding: 30px;
     border-radius: 15px;
@@ -112,7 +112,7 @@ body {
 }
 
 .message.user .message-avatar {
-    background: linear-gradient(135deg, #0288d1 0%, #81d4fa 100%);
+    background: #348799;
     color: #fff8e1;
 }
 
@@ -139,7 +139,7 @@ body {
 }
 
 .message.user .message-bubble {
-    background: linear-gradient(135deg, #0288d1 0%, #81d4fa 100%);
+    background: #348799;
     color: #fff8e1;
     border-bottom-right-radius: 5px;
 }
@@ -331,7 +331,7 @@ body {
     height: 50px;
     border: none;
     border-radius: 50%;
-    background: linear-gradient(135deg, #0288d1 0%, #81d4fa 100%);
+    background: #348799;
     color: #fff8e1;
     cursor: pointer;
     display: flex;
@@ -343,7 +343,7 @@ body {
 
 #sendButton:hover:not(:disabled) {
     transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(2, 136, 209, 0.4);
+    box-shadow: 0 5px 15px rgba(52, 135, 153, 0.4);
 }
 
 #sendButton:disabled {
@@ -487,11 +487,11 @@ body {
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #0288d1 0%, #81d4fa 100%);
+    background: #348799;
     color: #fff8e1;
     border: none;
     cursor: pointer;
-    box-shadow: 0 10px 25px rgba(2, 136, 209, 0.3);
+    box-shadow: 0 10px 25px rgba(52, 135, 153, 0.3);
     transition: all 0.3s ease;
     z-index: 999;
     display: flex;
@@ -501,7 +501,7 @@ body {
 
 .fab:hover {
     transform: scale(1.1);
-    box-shadow: 0 15px 35px rgba(2, 136, 209, 0.4);
+    box-shadow: 0 15px 35px rgba(52, 135, 153, 0.4);
 }
 
 /* Responsive Design */

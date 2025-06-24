@@ -124,7 +124,7 @@ def extract_learning_insights(response):
     keywords = [
         'concept', 'principle', 'formula', 'theorem', 'definition',
         'integration', 'differentiation', 'probability', 'statistics',
-        'optimization', 'derivative', 'integral', 'function'
+        'optimisation', 'derivative', 'integral', 'function'
     ]
     
     response_lower = response.lower()
