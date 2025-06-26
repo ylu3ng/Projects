@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Math Tutor - Gaia Theme</title>
+    <title>AI Math Tutor</title>
     
     <!-- Gaia Theme Fonts -->
     <link rel="stylesheet" href="https://fonts.bunny.net/css?family=Lato:400,900|Roboto+Mono:400,700&display=swap">
@@ -25,6 +25,28 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+    <!-- Name Input Modal -->
+    <div class="modal-overlay" id="nameModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Welcome to AI Math Tutor! 🎓</h2>
+            </div>
+            <div class="modal-body">
+                <p>Please enter your name to get started:</p>
+                <form id="nameForm" class="name-form">
+                    <input 
+                        type="text" 
+                        id="userNameInput" 
+                        placeholder="Enter your name..." 
+                        required
+                        autocomplete="name"
+                    >
+                    <button type="submit" class="btn btn-primary">Start Learning</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <!-- Header -->
         <header class="header">
@@ -36,7 +58,7 @@
         <main class="chat-container">
             <!-- Chat Messages -->
             <div class="chat-messages" id="chatMessages">
-                <div class="welcome-message">
+                <div class="welcome-message" id="welcomeMessage" style="display: none;">
                     <h3>Welcome to your AI Math Tutor! 🎓</h3>
                     <p>I'm here to help you with:</p>
                     <ul>
@@ -88,6 +110,10 @@
             </div>
             
             <div class="session-info">
+                <div class="info-item">
+                    <label>Student:</label>
+                    <span id="studentName">-</span>
+                </div>
                 <div class="info-item">
                     <label>Session ID:</label>
                     <span id="sessionId">-</span>

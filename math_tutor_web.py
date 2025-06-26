@@ -4,6 +4,7 @@ import os
 import json
 from datetime import datetime
 import uuid
+import re
 
 # Import your existing math tutor agent
 from math_tutor_agent import agent_executor, HumanMessage, AIMessage
@@ -26,6 +27,7 @@ def chat():
         data = request.get_json()
         message = data.get('message', '').strip()
         session_id = data.get('session_id')
+        user_name = data.get('user_name', 'Student')
         
         if not message:
             return jsonify({'error': 'Message cannot be empty'}), 400
@@ -35,8 +37,13 @@ def chat():
             chat_sessions[session_id] = {
                 'chat_history': [],
                 'created_at': datetime.now().isoformat(),
-                'learning_insights': []
+                'learning_insights': [],
+                'has_first_response': False,
+                'user_name': user_name
             }
+        else:
+            # Update user name if provided
+            chat_sessions[session_id]['user_name'] = user_name
         
         session = chat_sessions[session_id]
         
@@ -47,34 +54,74 @@ def chat():
             'timestamp': datetime.now().isoformat()
         })
         
+        # Create personalized prompt for the AI
+        personalized_message = f"Hi {user_name}! {message}"
+        
         # Get response from agent
         response = agent_executor.invoke({
-            "input": message,
+            "input": personalized_message,
             "chat_history": session['chat_history']
         })
         
         ai_response = response["output"]
         
+        # Personalize the AI response
+        personalized_response = personalize_response(ai_response, user_name)
+        
         # Add AI response to history
         session['chat_history'].append({
             'role': 'assistant',
-            'content': ai_response,
+            'content': personalized_response,
             'timestamp': datetime.now().isoformat()
         })
         
-        # Extract learning insights (simple keyword-based approach)
-        insights = extract_learning_insights(ai_response)
-        if insights:
-            session['learning_insights'].extend(insights)
+        # Generate learning insights after first tutor response
+        if not session['has_first_response']:
+            session['has_first_response'] = True
+            insights = generate_learning_insights(message, personalized_response, user_name)
+            if insights:
+                session['learning_insights'] = insights
         
         return jsonify({
-            'response': ai_response,
+            'response': personalized_response,
             'session_id': session_id,
             'timestamp': datetime.now().isoformat()
         })
         
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+def personalize_response(response, user_name):
+    """Personalize the AI response with the user's name"""
+    # Add personal touches to the response
+    personalized = response
+    
+    # Add greeting if it's the first interaction
+    if not any(greeting in response.lower() for greeting in ['hello', 'hi', 'hey', 'welcome']):
+        # Add a personal greeting at the beginning
+        personalized = f"Hi {user_name}! {response}"
+    
+    # Replace generic references with personal ones
+    personalized = personalized.replace('you', f'you, {user_name}')
+    personalized = personalized.replace('your', f'your, {user_name}')
+    
+    # Add encouraging phrases
+    encouraging_phrases = [
+        f"Great question, {user_name}!",
+        f"Well done, {user_name}!",
+        f"Excellent thinking, {user_name}!",
+        f"Keep it up, {user_name}!",
+        f"You're doing great, {user_name}!"
+    ]
+    
+    # Add encouragement at the end if the response is positive
+    if any(word in response.lower() for word in ['correct', 'right', 'good', 'excellent', 'perfect']):
+        import random
+        encouragement = random.choice(encouraging_phrases)
+        if encouragement not in personalized:
+            personalized += f"\n\n{encouragement}"
+    
+    return personalized
 
 @app.route('/api/session/<session_id>/summary', methods=['GET'])
 def get_session_summary(session_id):
@@ -87,8 +134,9 @@ def get_session_summary(session_id):
         'session_id': session_id,
         'created_at': session['created_at'],
         'message_count': len(session['chat_history']),
-        'learning_insights': list(set(session['learning_insights'])),  # Remove duplicates
-        'chat_history': session['chat_history']
+        'learning_insights': session['learning_insights'],
+        'chat_history': session['chat_history'],
+        'user_name': session.get('user_name', 'Student')
     })
 
 @app.route('/api/session/<session_id>/export', methods=['GET'])
@@ -103,7 +151,8 @@ def export_session(session_id):
         'created_at': session['created_at'],
         'exported_at': datetime.now().isoformat(),
         'chat_history': session['chat_history'],
-        'learning_insights': list(set(session['learning_insights']))
+        'learning_insights': session['learning_insights'],
+        'user_name': session.get('user_name', 'Student')
     }
     
     return jsonify(export_data)
@@ -116,23 +165,71 @@ def delete_session(session_id):
         return jsonify({'message': 'Session deleted successfully'})
     return jsonify({'error': 'Session not found'}), 404
 
-def extract_learning_insights(response):
-    """Extract learning insights from AI response"""
+def generate_learning_insights(user_question, tutor_response, user_name):
+    """Generate intelligent learning insights from the first tutor response"""
     insights = []
     
-    # Simple keyword-based extraction
-    keywords = [
-        'concept', 'principle', 'formula', 'theorem', 'definition',
-        'integration', 'differentiation', 'probability', 'statistics',
-        'optimisation', 'derivative', 'integral', 'function'
-    ]
+    # Convert to lowercase for easier matching
+    question_lower = user_question.lower()
+    response_lower = tutor_response.lower()
     
-    response_lower = response.lower()
-    for keyword in keywords:
-        if keyword in response_lower:
-            insights.append(f"Learned about {keyword}")
+    # Mathematical concepts and topics
+    math_concepts = {
+        'calculus': ['derivative', 'integral', 'differentiation', 'integration', 'limit', 'continuity'],
+        'statistics': ['probability', 'mean', 'median', 'mode', 'variance', 'standard deviation', 'distribution'],
+        'algebra': ['equation', 'function', 'polynomial', 'quadratic', 'linear'],
+        'geometry': ['area', 'volume', 'perimeter', 'triangle', 'circle', 'rectangle'],
+        'trigonometry': ['sine', 'cosine', 'tangent', 'angle', 'trigonometric'],
+        'optimization': ['maximize', 'minimize', 'critical point', 'extrema', 'optimization'],
+        'series': ['sequence', 'series', 'convergence', 'divergence', 'summation'],
+        'linear_algebra': ['matrix', 'vector', 'eigenvalue', 'determinant', 'linear transformation']
+    }
     
-    return insights
+    # Find relevant mathematical concepts
+    found_concepts = []
+    for category, concepts in math_concepts.items():
+        for concept in concepts:
+            if concept in question_lower or concept in response_lower:
+                found_concepts.append(category)
+                break
+    
+    if found_concepts:
+        unique_concepts = list(set(found_concepts))  # Remove duplicates
+        insights.append(f"📚 {user_name} is learning about: {', '.join(unique_concepts[:3])}")
+    
+    # Problem-solving approaches
+    if any(word in response_lower for word in ['step', 'method', 'approach', 'strategy']):
+        insights.append(f"🔍 {user_name} is understanding problem-solving methodology")
+    
+    if any(word in response_lower for word in ['formula', 'equation', 'expression']):
+        insights.append(f"📐 {user_name} is working with mathematical formulas and equations")
+    
+    if any(word in response_lower for word in ['graph', 'plot', 'visualize', 'sketch']):
+        insights.append(f"📊 {user_name} is learning about graphical representations")
+    
+    if any(word in response_lower for word in ['proof', 'theorem', 'definition']):
+        insights.append(f"📖 {user_name} is understanding mathematical proofs and definitions")
+    
+    # Question type analysis
+    if any(word in question_lower for word in ['how', 'why', 'explain', 'understand']):
+        insights.append(f"🤔 {user_name} is developing conceptual understanding")
+    elif any(word in question_lower for word in ['solve', 'calculate', 'compute', 'find']):
+        insights.append(f"🧮 {user_name} is practicing computational skills")
+    elif any(word in question_lower for word in ['prove', 'show', 'demonstrate']):
+        insights.append(f"🔬 {user_name} is learning proof techniques")
+    
+    # Difficulty level indicators
+    if any(word in response_lower for word in ['advanced', 'complex', 'sophisticated']):
+        insights.append(f"🚀 {user_name} is tackling advanced mathematical concepts")
+    elif any(word in response_lower for word in ['basic', 'fundamental', 'elementary']):
+        insights.append(f"📝 {user_name} is building foundational knowledge")
+    
+    # Application context
+    if any(word in question_lower for word in ['real', 'world', 'application', 'practical']):
+        insights.append(f"🌍 {user_name} is connecting math to real-world applications")
+    
+    # Return unique insights (remove duplicates)
+    return list(set(insights))
 
 if __name__ == '__main__':
     # Check for required environment variables
