@@ -23,9 +23,11 @@ A beautiful, personalized AI-powered math tutoring web application built with Fl
 - **Multiple Math Topics**: Support for calculus, statistics, algebra, geometry, and more
 
 ### 📊 Intelligent Learning Insights
+- **Hybrid Approach**: Combines concept-based detection with LLM enhancement
 - **Real-time Analysis**: Automatically generates insights after the first tutor response
-- **Concept Detection**: Identifies mathematical concepts being learned
-- **Progress Tracking**: Monitors learning patterns and difficulty levels
+- **Concept Detection**: Identifies mathematical concepts using comprehensive taxonomy
+- **LLM Enhancement**: Provides contextual, personalized insights using AI
+- **Configurable System**: Toggle between different insight generation modes
 - **Personalized Feedback**: Insights are customized with the student's name
 
 ### 🔧 Smart Features
@@ -33,6 +35,7 @@ A beautiful, personalized AI-powered math tutoring web application built with Fl
 - **Session Export**: Download complete chat sessions as JSON files
 - **Session Management**: Create, track, and delete learning sessions
 - **Real-time Updates**: Live session information and message counting
+- **Insight Testing**: API endpoints for testing and comparing insight approaches
 
 ## 🚀 Quick Start
 
@@ -246,3 +249,91 @@ For support and questions:
 ---
 
 **Made with ❤️ for better math education**
+
+## 🧠 Hybrid Learning Insights System
+
+The application features an advanced learning insights system that combines the reliability of concept-based detection with the contextual intelligence of LLM enhancement.
+
+### **Three Approaches Available:**
+
+#### 1. **Concept-Based Insights** (Fast & Reliable)
+- Uses comprehensive mathematical concept taxonomy
+- Detects 10+ mathematical areas (calculus, statistics, algebra, etc.)
+- Identifies learning approaches and difficulty levels
+- No additional API calls required
+- Consistent and predictable results
+
+#### 2. **LLM-Enhanced Insights** (Contextual & Personalized)
+- Uses AI to generate contextual insights
+- Provides personalized feedback and encouragement
+- Adapts to any mathematical topic
+- More natural and engaging language
+- Requires additional API calls
+
+#### 3. **Hybrid Approach** (Recommended)
+- Combines both concept-based and LLM insights
+- Fast initial categorization with concept tags
+- Enhanced with contextual AI-generated insights
+- Best balance of speed, reliability, and personalization
+- Graceful fallback to concept-based only if LLM fails
+
+### **Mathematical Concept Taxonomy**
+
+The system recognizes these mathematical areas:
+
+- **Calculus**: Derivatives, integrals, limits, continuity
+- **Statistics**: Probability, distributions, hypothesis testing
+- **Algebra**: Equations, functions, linear algebra, matrices
+- **Geometry**: Areas, volumes, coordinate geometry
+- **Trigonometry**: Trigonometric functions, identities
+- **Optimization**: Maximization, minimization, constraints
+- **Series**: Sequences, convergence, power series
+- **Differential Equations**: ODEs, PDEs, initial value problems
+- **Number Theory**: Primes, modular arithmetic, congruences
+- **Discrete Math**: Combinatorics, graph theory, algorithms
+
+### **Configuration Options**
+
+```python
+INSIGHT_CONFIG = {
+    'use_llm_enhancement': True,  # Enable/disable LLM enhancement
+    'max_insights': 5,            # Maximum number of insights
+    'llm_timeout': 10             # LLM request timeout (seconds)
+}
+```
+
+### **API Endpoints for Testing**
+
+- `GET /api/insights/config` - Get current configuration
+- `POST /api/insights/config` - Update configuration
+- `POST /api/insights/test` - Test insight generation
+
+### **Example Usage**
+
+```bash
+# Test insight generation
+curl -X POST http://localhost:8080/api/insights/test \
+  -H "Content-Type: application/json" \
+  -d '{
+    "question": "How do I find the derivative of x^2?",
+    "response": "The derivative of x^2 is 2x using the power rule.",
+    "user_name": "Alice"
+  }'
+
+# Toggle LLM enhancement
+curl -X POST http://localhost:8080/api/insights/config \
+  -H "Content-Type: application/json" \
+  -d '{"use_llm_enhancement": false}'
+```
+
+### **Running the Test Suite**
+
+```bash
+# Start the server
+python math_tutor_web.py
+
+# In another terminal, run the test suite
+python test_insights.py
+```
+
+## 🎯 Key Components

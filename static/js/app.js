@@ -27,9 +27,42 @@ const welcomeMessage = document.getElementById('welcomeMessage');
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
-    // Show name input modal first
+    // Set up name form event listener first
+    nameForm.addEventListener('submit', handleNameSubmit);
+    
+    // Also add click handler for the button as fallback
+    const startButton = document.querySelector('.btn-primary');
+    if (startButton) {
+        startButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            handleNameSubmit(e);
+        });
+    }
+    
+    // Add Enter key handler for name input
+    userNameInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleNameSubmit(e);
+        }
+    });
+    
+    // Temporary bypass for testing (remove this in production)
+    // Uncomment the next line to bypass name input
+    // bypassNameInput();
+    
+    // Show name input modal
     showNameModal();
 });
+
+// Temporary function to bypass name input (for testing)
+function bypassNameInput() {
+    userName = 'Test User';
+    hideNameModal();
+    initializeApp();
+    setupEventListeners();
+    showNotification(`Welcome, ${userName}! Let's start learning! 🎓`, 'success');
+}
 
 function showNameModal() {
     nameModal.style.display = 'flex';
@@ -65,15 +98,12 @@ function showPersonalizedWelcome() {
     const welcomeTitle = welcomeMessage.querySelector('h3');
     const welcomeText = welcomeMessage.querySelector('p:last-child');
     
-    // Update welcome message with user's name
+    // Update welcome message with user's name and Thomas as tutor
     welcomeTitle.innerHTML = `Welcome, ${userName}! 🎓`;
-    welcomeText.innerHTML = `Hi ${userName}! I'm here to help you with your math studies. Ask me anything - I'll guide you step-by-step through the solutions!`;
+    welcomeText.innerHTML = `Hi ${userName}! I'm Thomas, your AI math tutor. I'm here to help you with your math studies. Ask me anything - I'll guide you step-by-step through the solutions!`;
 }
 
 function setupEventListeners() {
-    // Name form submission
-    nameForm.addEventListener('submit', handleNameSubmit);
-    
     // Chat form submission
     chatForm.addEventListener('submit', handleChatSubmit);
     
@@ -105,8 +135,11 @@ function setupEventListeners() {
 
 function handleNameSubmit(e) {
     e.preventDefault();
+    console.log('Name form submitted'); // Debug log
     
     const name = userNameInput.value.trim();
+    console.log('Name entered:', name); // Debug log
+    
     if (!name) {
         showNotification('Please enter your name', 'error');
         return;
@@ -114,6 +147,7 @@ function handleNameSubmit(e) {
     
     // Store the user's name
     userName = name;
+    console.log('User name stored:', userName); // Debug log
     
     // Hide modal and initialize app
     hideNameModal();
@@ -331,7 +365,7 @@ async function updateSessionInfo() {
             
             // Update learning insights if available
             if (data.learning_insights && data.learning_insights.length > 0) {
-                updateLearningInsights(data.learning_insights);
+                displayLearningInsights(data.learning_insights);
             }
         }
     } catch (error) {
@@ -339,69 +373,66 @@ async function updateSessionInfo() {
     }
 }
 
-function updateLearningInsights(insights) {
+function displayLearningInsights(insights) {
+    const insightsContainer = document.getElementById('learningInsights');
+    if (!insightsContainer) return;
+    
+    insightsContainer.innerHTML = '';
+    
     if (!insights || insights.length === 0) {
-        insightsList.innerHTML = '<li class="no-insights">No insights yet. Start chatting to see what you learn!</li>';
+        insightsContainer.innerHTML = '<p class="no-insights">No learning insights available yet.</p>';
         return;
     }
     
-    insightsList.innerHTML = '';
-    insights.forEach(insight => {
-        const li = document.createElement('li');
-        li.textContent = insight;
-        insightsList.appendChild(li);
+    const insightsTitle = document.createElement('h3');
+    insightsTitle.textContent = '🎓 Learning Insights';
+    insightsTitle.className = 'insights-title';
+    insightsContainer.appendChild(insightsTitle);
+    
+    const insightsList = document.createElement('div');
+    insightsList.className = 'insights-list';
+    
+    insights.forEach((insight, index) => {
+        const insightItem = document.createElement('div');
+        insightItem.className = 'insight-item';
+        
+        // Check if this is an agent-based insight
+        const isAgentInsight = insight.includes('📚') || insight.includes('🔍') || insight.includes('📈');
+        const isLearningSummary = insight.includes('learning summary');
+        
+        if (isAgentInsight) {
+            insightItem.classList.add('agent-insight');
+        } else if (isLearningSummary) {
+            insightItem.classList.add('summary-insight');
+        }
+        
+        insightItem.innerHTML = `
+            <span class="insight-icon">${insight.split(' ')[0]}</span>
+            <span class="insight-text">${insight.substring(insight.indexOf(' ') + 1)}</span>
+        `;
+        
+        insightsList.appendChild(insightItem);
     });
+    
+    insightsContainer.appendChild(insightsList);
+    
+    // Add a note about insight sources if agent is available
+    const hasAgentInsights = insights.some(insight => 
+        insight.includes('📚') || insight.includes('🔍') || insight.includes('📈')
+    );
+    
+    if (hasAgentInsights) {
+        const sourceNote = document.createElement('p');
+        sourceNote.className = 'insight-source';
+        sourceNote.innerHTML = '<small>💡 Insights generated using AI tutor analysis</small>';
+        insightsContainer.appendChild(sourceNote);
+    }
 }
 
 function generateLearningInsights(tutorResponse, userQuestion) {
-    // Create a summary of the learning session
-    const insights = [];
-    
-    // Extract key concepts from the tutor's response
-    const responseText = tutorResponse.toLowerCase();
-    const questionText = userQuestion.toLowerCase();
-    
-    // Look for mathematical concepts
-    const mathConcepts = [
-        'derivative', 'integral', 'calculus', 'differentiation', 'integration',
-        'probability', 'statistics', 'mean', 'median', 'mode', 'variance',
-        'function', 'equation', 'formula', 'theorem', 'proof', 'solution',
-        'optimization', 'maximize', 'minimize', 'critical point', 'limit',
-        'series', 'sequence', 'convergence', 'divergence', 'matrix', 'vector'
-    ];
-    
-    const foundConcepts = mathConcepts.filter(concept => 
-        responseText.includes(concept) || questionText.includes(concept)
-    );
-    
-    if (foundConcepts.length > 0) {
-        insights.push(`📚 Learning about: ${foundConcepts.slice(0, 3).join(', ')}`);
-    }
-    
-    // Look for problem-solving approaches
-    if (responseText.includes('step') || responseText.includes('method')) {
-        insights.push('🔍 Understanding problem-solving methodology');
-    }
-    
-    if (responseText.includes('formula') || responseText.includes('equation')) {
-        insights.push('📐 Working with mathematical formulas and equations');
-    }
-    
-    if (responseText.includes('graph') || responseText.includes('plot')) {
-        insights.push('📊 Learning about graphical representations');
-    }
-    
-    // Add a general insight based on the question type
-    if (questionText.includes('how') || questionText.includes('why')) {
-        insights.push('🤔 Developing conceptual understanding');
-    } else if (questionText.includes('solve') || questionText.includes('calculate')) {
-        insights.push('🧮 Practicing computational skills');
-    }
-    
-    // Update the insights display
-    if (insights.length > 0) {
-        updateLearningInsights(insights);
-    }
+    // This function is now handled by the backend with hybrid approach
+    // The backend will generate both concept-based and LLM-enhanced insights
+    console.log('Learning insights are now generated by the backend');
 }
 
 async function exportSession() {
@@ -456,7 +487,7 @@ async function deleteSession() {
             }
             
             // Reset insights
-            updateLearningInsights([]);
+            displayLearningInsights([]);
             
             showNotification('Session deleted successfully!', 'success');
         } else {

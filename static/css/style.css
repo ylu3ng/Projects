@@ -687,4 +687,71 @@ body {
 
 .chat-messages::-webkit-scrollbar-thumb:hover {
     background: #0288d1;
+}
+
+/* Learning Insights Styling */
+.insights-title {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 5px;
+}
+
+.insights-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.insight-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 8px;
+    border-left: 4px solid #3498db;
+    transition: all 0.3s ease;
+}
+
+.insight-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15);
+}
+
+.insight-item.agent-insight {
+    border-left-color: #e74c3c;
+    background: linear-gradient(135deg, #fdf2f2 0%, #fce4e4 100%);
+}
+
+.insight-item.summary-insight {
+    border-left-color: #27ae60;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+}
+
+.insight-icon {
+    font-size: 1.2em;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.insight-text {
+    flex: 1;
+    line-height: 1.5;
+    color: #2c3e50;
+}
+
+.insight-source {
+    margin-top: 10px;
+    text-align: center;
+    color: #7f8c8d;
+    font-style: italic;
+}
+
+.no-insights {
+    text-align: center;
+    color: #7f8c8d;
+    font-style: italic;
+    padding: 20px;
 } 
