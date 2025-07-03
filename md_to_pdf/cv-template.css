@@ -1,0 +1,413 @@
+/* CV/Resume Markdown to PDF CSS Template */
+/* Optimized for 1-page printout with professional formatting */
+
+/* ===== RESET AND BASE STYLES ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 11pt;
+  line-height: 1.5;
+  color: #333;
+  background: white;
+  max-width: 8.5in;
+  margin: 0 auto;
+  padding: 0.5in;
+}
+
+/* ===== TYPOGRAPHY ===== */
+h1 {
+  font-size: 24pt;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 8pt;
+  border-bottom: 2pt solid #2c3e50;
+  padding-bottom: 4pt;
+}
+
+h2 {
+  font-size: 14pt;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-top: 16pt;
+  margin-bottom: 8pt;
+  text-transform: uppercase;
+  letter-spacing: 1pt;
+  border-bottom: 1pt solid #bdc3c7;
+  padding-bottom: 2pt;
+}
+
+h3 {
+  font-size: 12pt;
+  font-weight: bold;
+  color: #34495e;
+  margin-top: 12pt;
+  margin-bottom: 4pt;
+}
+
+h4 {
+  font-size: 11pt;
+  font-weight: bold;
+  color: #34495e;
+  margin-top: 8pt;
+  margin-bottom: 2pt;
+}
+
+/* ===== CONTACT INFORMATION ===== */
+.contact-info {
+  text-align: center;
+  margin-bottom: 16pt;
+  padding: 8pt 0;
+  background: #f8f9fa;
+  border-radius: 4pt;
+}
+
+.contact-info h1 {
+  border-bottom: none;
+  margin-bottom: 4pt;
+}
+
+.contact-details {
+  font-size: 10pt;
+  color: #666;
+  line-height: 1.6;
+}
+
+.contact-details a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+.contact-details a:hover {
+  text-decoration: underline;
+}
+
+/* ===== SECTIONS ===== */
+.section {
+  margin-bottom: 16pt;
+  page-break-inside: avoid;
+}
+
+.section:last-child {
+  margin-bottom: 0;
+}
+
+/* ===== LISTS ===== */
+ul, ol {
+  margin-left: 20pt;
+  margin-bottom: 8pt;
+}
+
+li {
+  margin-bottom: 2pt;
+  line-height: 1.3;
+}
+
+/* ===== LINKS ===== */
+a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* ===== EMPHASIS ===== */
+strong, b {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+em, i {
+  font-style: italic;
+}
+
+/* ===== CODE ===== */
+code {
+  font-family: 'Courier New', monospace;
+  font-size: 10pt;
+  background: #f1f2f6;
+  padding: 1pt 3pt;
+  border-radius: 2pt;
+}
+
+pre {
+  font-family: 'Courier New', monospace;
+  font-size: 10pt;
+  background: #f8f9fa;
+  padding: 8pt;
+  border-left: 3pt solid #3498db;
+  margin: 8pt 0;
+  overflow-x: auto;
+}
+
+/* ===== TABLES ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 8pt 0;
+  font-size: 10pt;
+}
+
+th, td {
+  padding: 4pt 8pt;
+  text-align: left;
+  border-bottom: 1pt solid #ddd;
+}
+
+th {
+  background: #f8f9fa;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+/* ===== BLOCKQUOTES ===== */
+blockquote {
+  margin: 8pt 0;
+  padding: 8pt 16pt;
+  border-left: 4pt solid #3498db;
+  background: #f8f9fa;
+  font-style: italic;
+}
+
+/* ===== HORIZONTAL RULES ===== */
+hr {
+  border: none;
+  border-top: 1pt solid #ddd;
+  margin: 16pt 0;
+}
+
+/* ===== EXPERIENCE AND EDUCATION SECTIONS ===== */
+.experience-item, .education-item {
+  margin-bottom: 12pt;
+  page-break-inside: avoid;
+}
+
+.experience-header, .education-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 4pt;
+}
+
+.experience-title, .education-degree {
+  font-weight: bold;
+  color: #2c3e50;
+  font-size: 11pt;
+}
+
+.experience-company, .education-school {
+  font-weight: bold;
+  color: #34495e;
+  font-size: 10pt;
+}
+
+.experience-date, .education-date {
+  font-size: 9pt;
+  color: #7f8c8d;
+  font-style: italic;
+}
+
+.experience-description, .education-description {
+  font-size: 10pt;
+  line-height: 1.3;
+  margin-top: 4pt;
+}
+
+/* ===== SKILLS SECTION ===== */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200pt, 1fr));
+  gap: 8pt;
+  margin-top: 8pt;
+}
+
+.skill-category {
+  margin-bottom: 8pt;
+}
+
+.skill-category h4 {
+  margin-bottom: 4pt;
+  color: #2c3e50;
+}
+
+.skill-list {
+  font-size: 10pt;
+  color: #555;
+}
+
+/* ===== PRINT OPTIMIZATIONS ===== */
+@media print {
+  body {
+    margin: 0;
+    padding: 0.25in;
+    font-size: 10pt;
+    line-height: 1.3;
+  }
+  
+  h1 {
+    font-size: 20pt;
+    margin-bottom: 6pt;
+  }
+  
+  h2 {
+    font-size: 12pt;
+    margin-top: 12pt;
+    margin-bottom: 6pt;
+  }
+  
+  h3 {
+    font-size: 11pt;
+    margin-top: 8pt;
+    margin-bottom: 3pt;
+  }
+  
+  .section {
+    margin-bottom: 12pt;
+  }
+  
+  .experience-item, .education-item {
+    margin-bottom: 8pt;
+  }
+  
+  /* Ensure no page breaks within sections */
+  .section, .experience-item, .education-item {
+    page-break-inside: avoid;
+  }
+  
+  /* Hide links in print */
+  a {
+    color: #333;
+  }
+  
+  /* Optimize spacing for print */
+  ul, ol {
+    margin-left: 16pt;
+    margin-bottom: 6pt;
+  }
+  
+  li {
+    margin-bottom: 1pt;
+  }
+  
+  /* Ensure contact info fits */
+  .contact-info {
+    margin-bottom: 12pt;
+    padding: 6pt 0;
+  }
+  
+  .contact-details {
+    font-size: 9pt;
+  }
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media screen and (max-width: 8.5in) {
+  body {
+    padding: 0.25in;
+    font-size: 10pt;
+  }
+  
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .experience-header, .education-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .experience-date, .education-date {
+    margin-top: 2pt;
+  }
+}
+
+/* ===== UTILITY CLASSES ===== */
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-small {
+  font-size: 9pt;
+}
+
+.text-muted {
+  color: #7f8c8d;
+}
+
+.mb-0 {
+  margin-bottom: 0;
+}
+
+.mt-0 {
+  margin-top: 0;
+}
+
+/* ===== CUSTOM MARKDOWN ELEMENTS ===== */
+/* For markdown-generated content */
+p {
+  margin-bottom: 6pt;
+  line-height: 1.4;
+}
+
+/* Handle markdown tables */
+table th:first-child,
+table td:first-child {
+  padding-left: 0;
+}
+
+/* Handle markdown lists */
+ul ul, ol ol, ul ol, ol ul {
+  margin-top: 4pt;
+  margin-bottom: 4pt;
+}
+
+/* Handle markdown emphasis combinations */
+strong em, em strong {
+  font-weight: bold;
+  font-style: italic;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  margin-top: 16pt;
+  padding-top: 8pt;
+  border-top: 1pt solid #ddd;
+  font-size: 8pt;
+  color: #7f8c8d;
+  text-align: center;
+}
+
+/* ===== ACCESSIBILITY ===== */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  body {
+    color: #000;
+    background: #fff;
+  }
+  
+  h1, h2, h3, h4 {
+    color: #000;
+  }
+  
+  .contact-info {
+    background: #f0f0f0;
+  }
+} 
