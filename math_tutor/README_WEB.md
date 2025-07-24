@@ -23,25 +23,42 @@ A modern web interface for your AI Math Tutor agent, featuring real-time chat, L
 
 ### Installation
 
-1. **Clone or download the project files**
-
-2. **Install dependencies**:
+1. **Navigate to the Project Directory**
    ```bash
+   cd math_tutor
+   ```
+
+2. **Create and Activate a Virtual Environment (using system Python)**
+   ```bash
+   /usr/bin/python3 -m venv sysvenv
+   source sysvenv/bin/activate
+   ```
+
+3. **Install Dependencies**
+   ```bash
+   pip install --upgrade pip
    pip install -r requirements.txt
    ```
 
-3. **Set up your API keys**:
-   ```bash
-   export GOOGLE_API_KEY="your_google_ai_studio_api_key"
-   export WOLFRAM_ALPHA_APP_ID="your_wolfram_alpha_app_id"  # Optional
-   ```
+4. **Set Up API Keys**
+   - Set your environment variables:
+     ```bash
+     export GOOGLE_API_KEY="your_google_ai_studio_api_key"
+     export WOLFRAM_ALPHA_APP_ID="your_wolfram_alpha_app_id"  # Optional
+     ```
 
-4. **Run the application**:
+5. **Run the Application**
    ```bash
-   python app.py
+   python math_tutor_web.py
    ```
+   - The app will be available at [http://localhost:8080](http://localhost:8080)
 
-5. **Open your browser** and go to `http://localhost:5000`
+**Tip:**  
+You can use the provided `setup.sh` script to automate steps 2 and 3:
+```bash
+bash setup.sh
+```
+Then activate your environment and continue from step 4.
 
 ## Project Structure
 
